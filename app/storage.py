@@ -141,8 +141,12 @@ def save_file(file: UploadFile, document_id: int, version_number: int) -> Tuple[
             detail=f"Failed to save file: {str(e)}"
         )
     
-    # Return relative path as string
-    relative_path = str(file_path.relative_to(Path(".")))
+    # Return relative path as string (or absolute if not under current dir)
+    try:
+        relative_path = str(file_path.relative_to(Path(".")))
+    except ValueError:
+        # If path is not under current directory (e.g., temp dir), use absolute path
+        relative_path = str(file_path)
     return relative_path, file_size
 
 

@@ -272,7 +272,7 @@ def search_documents_by_tags(
         query = db.query(models.Document).join(models.document_tags).filter(
             models.document_tags.c.tag_id.in_(tag_ids)
         ).group_by(models.Document.id).having(
-            db.func.count(models.document_tags.c.tag_id.distinct()) == len(tag_ids)
+            func.count(models.document_tags.c.tag_id.distinct()) == len(tag_ids)
         )
     else:
         # Document must have any tag
